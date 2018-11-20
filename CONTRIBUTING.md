@@ -69,9 +69,9 @@ that to be accepted into the repository, the pull request must [pass all tests](
   (These instructions are for Linux)
 * In the `demos` directory, run:
 
->        cube
->        cube --validate
->        vulkaninfo
+>        vkcube
+>        vkcube --validate
+>        vkvulkaninfo
 
 * Run tests that explicitly exercise your changes.
 * Feel free to subject your code changes to other tests as well!

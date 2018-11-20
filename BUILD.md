@@ -23,8 +23,8 @@ in this repository for more details.
 
 This repository contains the source code necessary to build the following components:
 
-- vulkaninfo
-- cube and cubepp demos
+- Vulkan Info
+- Vulkan Cube (C and C++)
 - mock ICD
 
 ### Installed Files
@@ -32,7 +32,7 @@ This repository contains the source code necessary to build the following compon
 The `install` target installs the following files under the directory
 indicated by *install_dir*:
 
-- *install_dir*`/bin` : The vulkaninfo, cube and cubepp executables
+- *install_dir*`/bin` : The vulkaninfo, vkcube and vkcubepp executables
 - *install_dir*`/lib` : The mock ICD library and JSON (Windows) (If INSTALL_ICD=ON)
 - *install_dir*`/share/vulkan/icd.d` : mock ICD JSON (Linux/MacOS) (If INSTALL_ICD=ON)
 
@@ -84,7 +84,7 @@ Note that this dependency can be ignored if not building the mock ICD
 #### glslang
 
 This repository has a required dependency on the `glslangValidator` (shader
-compiler) for compiling the shader programs for the cube demos.
+compiler) for compiling the shader programs for the Vulkan Cube demo.
 
 The CMake code in this repository downloads release binaries of glslang if a
 build glslang repository is not provided. The glslangValidator is obtained
@@ -99,7 +99,7 @@ of building glslang. You must also take note of the glslang install directory
 and pass it on the CMake command line for building this repository, as
 described below.
 
-Note that this dependency can be ignored if not building the cube demo
+Note that this dependency can be ignored if not building the Vulkan Cube demo
 (CMake option: `-DBUILD_CUBE=OFF`).
 
 ### Build and Install Directories
@@ -166,8 +166,8 @@ on/off options currently supported by this repository:
 
 | Option | Platform | Default | Description |
 | ------ | -------- | ------- | ----------- |
-| BUILD_CUBE | All | `ON` | Controls whether or not the cube demo is built. |
-| BUILD_VULKANINFO | All | `ON` | Controls whether or not the vulkaninfo utility is built. |
+| BUILD_CUBE | All | `ON` | Controls whether or not the Vulkan Cube demo is built. |
+| BUILD_VULKANINFO | All | `ON` | Controls whether or not the Vulkan Info utility is built. |
 | BUILD_ICD | All | `ON` | Controls whether or not the mock ICD is built. |
 | INSTALL_ICD | All | `OFF` | Controls whether or not the mock ICD is installed as part of the install target. |
 | BUILD_WSI_XCB_SUPPORT | Linux | `ON` | Build the components with XCB support. |
@@ -420,14 +420,14 @@ maximize their usability across Linux platforms. If it is necessary to build
 these modules without support for one of the display servers, the appropriate
 CMake option of the form `BUILD_WSI_xxx_SUPPORT` can be set to `OFF`.
 
-Note vulkaninfo currently only supports Xcb and Xlib WSI display servers. See
+Note Vulkan Info currently only supports Xcb and Xlib WSI display servers. See
 the CMakeLists.txt file in `Vulkan-Tools/vulkaninfo` for more info.
 
-You can select which WSI subsystem is used to execute the cube applications
+You can select which WSI subsystem is used to execute the Vulkan Cube application
 using a CMake option called DEMOS_WSI_SELECTION. Supported options are XCB
 (default), XLIB, and WAYLAND. Note that you must build using the corresponding
 BUILD_WSI_*_SUPPORT enabled at the base repository level. For instance,
-creating a build that will use Xlib when running the cube demos, your CMake
+creating a build that will use Xlib when running the Vulkan Cube demo, your CMake
 command line might look like:
 
     cmake -DCMAKE_BUILD_TYPE=Debug -DDEMOS_WSI_SELECTION=XLIB ..
@@ -486,12 +486,12 @@ To uninstall the files from the system directories, you can execute:
 ### Linux Tests
 
 After making any changes to the repository, you should perform some quick
-sanity tests, such as running the cube demo with validation enabled.
+sanity tests, such as running the Vulkan Cube demo with validation enabled.
 
-To run the **Cube application** with validation, in a terminal change to the
+To run the **Vulkan Cube application** with validation, in a terminal change to the
 `build/cube` directory and run:
 
-    VK_LAYER_PATH=../path/to/validation/layers ./cube --validate
+    VK_LAYER_PATH=../path/to/validation/layers ./vkcube --validate
 
 If you have an SDK installed and have run the setup script to set the
 `VULKAN_SDK` environment variable, it may be unnecessary to specify a
@@ -636,7 +636,7 @@ for VS2013:
 ### Android Tests and Demos
 
 After making any changes to the repository you should perform some quick
-sanity tests, including the layer validation tests and the cube and smoke
+sanity tests, including the layer validation tests and the Vulkan Cube and smoke
 demos with validation enabled.
 
 #### Run Layer Validation Tests
@@ -654,18 +654,18 @@ validation tests:
 
     test_APK.sh -s <serial number> -p <platform name> -f <gtest_filter>
 
-#### Run Cube with Validation
+#### Run Vulkan Cube with Validation
 
 TODO: This must be reworked to pull in layers from the ValidationLayers repo
 
-Use the following steps to build, install, and run Cube for Android:
+Use the following steps to build, install, and run Vulkan Cube for Android:
 
     cd build-android
     ./build_all.sh
     adb install -r ../demos/android/cube/bin/cube.apk
     adb shell am start com.example.Cube/android.app.NativeActivity
 
-To build, install, and run Cube with validation layers,
+To build, install, and run Vulkan Cube with validation layers,
 first build layers using steps above, then run:
 
     cd build-android
@@ -710,7 +710,7 @@ section.
 
 [MoltenVK](https://github.com/KhronosGroup/MoltenVK) Library
 
-- Building the cube and vulkaninfo applications require linking to the
+- Building the Vulkan Cube and Vulkan Info applications require linking to the
   MoltenVK Library (libMoltenVK.dylib)
   - The following option should be used on the cmake command line to specify a
     vulkan loader library: MOLTENVK_REPO_ROOT=/absolute_path_to/MoltenVK
@@ -719,7 +719,7 @@ section.
 
 Vulkan Loader Library
 
-- Building the cube and vulkaninfo applications require linking to the Vulkan
+- Building the Vulkan Cube and Vulkan Info applications require linking to the Vulkan
   Loader Library (libvulkan.1.dylib)
   - The following option should be used on the cmake command line to specify a
     vulkan loader library:
@@ -757,8 +757,8 @@ to specify the number of cores to use for the build. For example:
 
 You can now run the demo applications from the command line:
 
-    open cube/cube.app
-    open cube/cubepp.app
+    open cube/vkcube.app
+    open cube/vkcubepp.app
     open vulkaninfo/vulkaninfo.app
 
 Or you can locate them from `Finder` and launch them from there.
@@ -771,9 +771,9 @@ that are still in your build tree.
 
 To see this, run this command from your `build` directory:
 
-    otool -l cube/cube.app/Contents/MacOS/cube
+    otool -l cube/vkcube.app/Contents/MacOS/vkcube
 
-and note that the `cube` executable contains loader commands:
+and note that the `vkcube` executable contains loader commands:
 
 - `LC_LOAD_DYLIB` to load `libvulkan.1.dylib` via an `@rpath`
 - `LC_RPATH` that contains an absolute path to the build location of the Vulkan loader
@@ -799,22 +799,21 @@ run the `otool` command again from the `build/install` directory and note:
 The "bundle fix-up" operation also puts a copy of the Vulkan loader into the
 bundle, making the bundle completely self-contained and self-referencing.
 
-##### The Non-bundled vulkaninfo Application
+##### The Non-bundled Vulkan Info Application
 
-There is also a non-bundled version of the `vulkaninfo` application that you
+There is also a non-bundled version of the Vulkan Info application that you
 can run from the command line:
 
     vulkaninfo/vulkaninfo
 
-If you run this from the build directory, vulkaninfo's RPATH is already
+If you run this from the build directory, the Vulkan Info RPATH is already
 set to point to the Vulkan loader in the build tree, so it has no trouble
 finding it. But the loader will not find the MoltenVK driver and you'll see a
 message about an incompatible driver. To remedy this:
 
     VK_ICD_FILENAMES=<path-to>/MoltenVK/Package/Latest/MoltenVK/macOS/MoltenVK_icd.json vulkaninfo/vulkaninfo
 
-If you run `vulkaninfo` from the install directory, the `RPATH` in the
-`vulkaninfo` application got removed and the OS needs extra help to locate
+If you run Vulkan Info from the install directory, the `RPATH` is removed and the OS needs extra help to locate
 the Vulkan loader:
 
     DYLD_LIBRARY_PATH=<path-to>/Vulkan-Loader/loader VK_ICD_FILENAMES=<path-to>/MoltenVK/Package/Latest/MoltenVK/macOS/MoltenVK_icd.json vulkaninfo/vulkaninfo
@@ -830,4 +829,4 @@ To create and open an Xcode project:
 
 Within Xcode, you can select Debug or Release builds in the project's Build
 Settings. You can also select individual schemes for working with specific
-applications like `cube`.
+applications like Vulkan Cube.
